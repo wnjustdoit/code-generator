@@ -1,7 +1,7 @@
 #### 使用说明
 * 更改配置文件的配置：src/main/resources/generator.yaml
     * 指定数据源
-    * 指定要生成的信息和模块
+    * 指定要生成的信息和模块（模板位置：src/main/resources/templates/*）
 * 更改 java 运行类：
     * 指定表名和实体名
 ```java
