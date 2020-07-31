@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Author GreedyStar
- * Date   2018/4/20
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/20
  */
 public class MapperTask extends AbstractTask {
 
@@ -83,7 +83,7 @@ public class MapperTask extends AbstractTask {
         String filePath = FileUtil.getResourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getMapper());
         String fileName = className + "Mapper.xml";
         // 生成Mapper文件
-        FileUtil.generateToJava(FreemarketConfigUtil.TYPE_MAPPER, mapperData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_MAPPER, mapperData, filePath, fileName);
     }
 
     private ColumnInfo getPrimaryKeyColumnInfo(List<ColumnInfo> list) {

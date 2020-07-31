@@ -2,24 +2,30 @@ package ${BasePackageName}${ControllerPackageName};
 
 import ${BasePackageName}${EntityPackageName}.${ClassName};
 import ${BasePackageName}${ServicePackageName}.${ClassName}Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Resource;
+
 /**
- * Author ${Author}
- * Date  ${Date}
+ * ${ClassName}Controller.
+ *
+ * @author ${Author}
+ * @since 1.0.0, ${Date}
  */
 @RestController
-@RequestMapping(value = "/${EntityName}")
+@RequestMapping("/${EntityName}")
 public class ${ClassName}Controller {
-    @Autowired
+
+    private static final Logger logger = LoggerFactory.getLogger(${ClassName}Controller.class);
+
+    @Resource
     private ${ClassName}Service ${EntityName}Service;
+
 
     @RequestMapping(value = {"/list", ""}, method = RequestMethod.GET)
     public Object list() {
@@ -27,13 +33,16 @@ public class ${ClassName}Controller {
         return ${EntityName}s;
     }
 
-    @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
-    public Object get(@RequestParam String id) {
+    @GetMapping("/{id}")
+    public Object get(@PathVariable String id) {
         ${ClassName} ${EntityName} = ${EntityName}Service.get(id);
         return ${EntityName};
     }
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    /**
+     * 新增
+     */
+    @PostMapping
     public String insert(@RequestBody ${ClassName} ${EntityName}) {
         if (${EntityName}Service.insert(${EntityName}) > 0) {
             return "success";

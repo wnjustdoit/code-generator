@@ -3,6 +3,7 @@ out/
 META-INF/
 !**/src/main/**
 !**/src/test/**
+**/mappers
 
 ### IntelliJ IDEA ###
 .idea

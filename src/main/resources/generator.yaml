@@ -1,14 +1,16 @@
 db:
-  url:
-  username:
-  password:
-author: unknown
-packageName:
-convertor:
+  url: jdbc:mysql://192.168.1.249:3306/mall_new5?useUnicode=true&characterEncoding=utf-8
+  username: root
+  password: 1234567
+author: wangnan
+packageName: com.mamaqunaer.test
+#convertor:
 path:
   controller: controller
+  controller1: controller1
   service: service.impl
   interf: service
   dao: dao
   entity: entity
+  entity1: entity1
   mapper: mappers

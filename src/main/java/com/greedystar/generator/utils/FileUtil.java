@@ -4,10 +4,12 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
- * Author GreedyStar
- * Date   2018/4/19
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/19
  */
 public class FileUtil {
 
@@ -35,11 +37,11 @@ public class FileUtil {
         Template tpl = getTemplate(type); // 获取模板文件
         // 填充数据
         StringWriter writer = new StringWriter();
-        tpl.process(data, writer);
+        Objects.requireNonNull(tpl).process(data, writer);
         writer.flush();
         // 写入文件
         FileOutputStream fos = new FileOutputStream(path);
-        OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+        OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         BufferedWriter bw = new BufferedWriter(osw, 1024);
         tpl.process(data, bw);
         writer.close();
@@ -50,55 +52,47 @@ public class FileUtil {
      * 获取模板
      *
      * @param type 模板类型
-     * @return
-     * @throws IOException
      */
     private static Template getTemplate(int type) throws IOException {
         switch (type) {
-            case FreemarketConfigUtil.TYPE_ENTITY:
-                return FreemarketConfigUtil.getInstance().getTemplate("Entity.ftl");
-            case FreemarketConfigUtil.TYPE_DAO:
-                return FreemarketConfigUtil.getInstance().getTemplate("Dao.ftl");
-            case FreemarketConfigUtil.TYPE_SERVICE:
-                return FreemarketConfigUtil.getInstance().getTemplate("Service.ftl");
-            case FreemarketConfigUtil.TYPE_CONTROLLER:
-                return FreemarketConfigUtil.getInstance().getTemplate("Controller.ftl");
-            case FreemarketConfigUtil.TYPE_MAPPER:
-                return FreemarketConfigUtil.getInstance().getTemplate("Mapper.ftl");
-            case FreemarketConfigUtil.TYPE_INTERFACE:
-                return FreemarketConfigUtil.getInstance().getTemplate("Interface.ftl");
+            case FreemarkerConfigUtil.TYPE_ENTITY:
+                return FreemarkerConfigUtil.getInstance().getTemplate("entity.ftl");
+            case FreemarkerConfigUtil.TYPE_ENTITY1:
+                return FreemarkerConfigUtil.getInstance().getTemplate("entity1.ftl");
+            case FreemarkerConfigUtil.TYPE_DAO:
+                return FreemarkerConfigUtil.getInstance().getTemplate("dao.ftl");
+            case FreemarkerConfigUtil.TYPE_SERVICE:
+                return FreemarkerConfigUtil.getInstance().getTemplate("service_implementation.ftl");
+            case FreemarkerConfigUtil.TYPE_CONTROLLER:
+                return FreemarkerConfigUtil.getInstance().getTemplate("controller.ftl");
+            case FreemarkerConfigUtil.TYPE_CONTROLLER1:
+                return FreemarkerConfigUtil.getInstance().getTemplate("controller1.ftl");
+            case FreemarkerConfigUtil.TYPE_MAPPER:
+                return FreemarkerConfigUtil.getInstance().getTemplate("mybatis_mapper.ftl");
+            case FreemarkerConfigUtil.TYPE_INTERFACE:
+                return FreemarkerConfigUtil.getInstance().getTemplate("service_interface.ftl");
             default:
                 return null;
         }
     }
 
     private static String getBasicProjectPath() {
-        String path = new File(FileUtil.class.getClassLoader().getResource("").getFile()).getPath() + File.separator;
-        StringBuilder sb = new StringBuilder();
-        sb.append(path.substring(0, path.indexOf("target"))).append("src").append(File.separator).append("main").append(File.separator);
-        return sb.toString();
+        String path = new File(Objects.requireNonNull(FileUtil.class.getClassLoader().getResource("")).getFile()).getPath() + File.separator;
+        return path.substring(0, path.indexOf("target")) + "src" + File.separator + "main" + File.separator;
     }
 
     /**
      * 获取源码路径
-     *
-     * @return
      */
     public static String getSourcePath() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getBasicProjectPath()).append("java").append(File.separator);
-        return sb.toString();
+        return getBasicProjectPath() + "java" + File.separator;
     }
 
     /**
      * 获取资源文件路径
-     *
-     * @return
      */
     public static String getResourcePath() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getBasicProjectPath()).append("resources").append(File.separator);
-        return sb.toString();
+        return getBasicProjectPath() + "resources" + File.separator;
     }
 
 }

@@ -3,8 +3,8 @@ package com.greedystar.generator.entity;
 import java.io.Serializable;
 
 /**
- * Author GreedyStar
- * Date   2018/9/7
+ * @author GreedyStar
+ * @since 1.0.0, 2018/9/7
  */
 public class Configuration implements Serializable {
     /**
@@ -122,6 +122,10 @@ public class Configuration implements Serializable {
          */
         private String controller;
         /**
+         * Controller1代码包路径
+         */
+        private String controller1;
+        /**
          * Service或ServiceImpl代码包路径
          */
         private String service;
@@ -137,6 +141,10 @@ public class Configuration implements Serializable {
          * Entity代码包路径
          */
         private String entity;
+        /**
+         * Entity1代码包路径
+         */
+        private String entity1;
         /**
          * Mapper映射文件路径
          */
@@ -160,6 +168,14 @@ public class Configuration implements Serializable {
 
         public void setController(String controller) {
             this.controller = controller;
+        }
+
+        public String getController1() {
+            return controller1 == null ? "" : controller1;
+        }
+
+        public void setController1(String controller1) {
+            this.controller1 = controller1;
         }
 
         public String getService() {
@@ -192,6 +208,14 @@ public class Configuration implements Serializable {
 
         public void setEntity(String entity) {
             this.entity = entity;
+        }
+
+        public String getEntity1() {
+            return entity1 == null ? "" : entity1;
+        }
+
+        public void setEntity1(String entity1) {
+            this.entity1 = entity1;
         }
 
         public String getMapper() {

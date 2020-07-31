@@ -1,4 +1,4 @@
-package com.greedystar.generator.application;
+package com.greedystar.generator;
 
 import com.greedystar.generator.invoker.Many2ManyInvoker;
 import com.greedystar.generator.invoker.One2ManyInvoker;
@@ -6,8 +6,10 @@ import com.greedystar.generator.invoker.SingleInvoker;
 import com.greedystar.generator.invoker.base.Invoker;
 
 /**
- * Author GreedyStar
- * Date   2018/9/5
+ * 执行入口
+ *
+ * @author wangnan
+ * @since 1.0.0, 2020/7/31
  */
 public class Main {
 
@@ -15,7 +17,16 @@ public class Main {
         single();
     }
 
-    public static void many2many() {
+    private static void single() {
+        Invoker invoker = new SingleInvoker.Builder()
+                .setTableName("aaa_copy")
+                .setClassName("Area")
+                .build();
+        invoker.execute();
+    }
+
+    @Deprecated
+    private static void many2many() {
         Invoker invoker = new Many2ManyInvoker.Builder()
                 .setTableName("user")
                 .setClassName("User")
@@ -28,21 +39,14 @@ public class Main {
         invoker.execute();
     }
 
-    public static void one2many() {
+    @Deprecated
+    private static void one2many() {
         Invoker invoker = new One2ManyInvoker.Builder()
                 .setTableName("user")
                 .setClassName("User")
                 .setParentTableName("office")
                 .setParentClassName("Office")
                 .setForeignKey("officeId")
-                .build();
-        invoker.execute();
-    }
-
-    public static void single() {
-        Invoker invoker = new SingleInvoker.Builder()
-                .setTableName("user")
-                .setClassName("User")
                 .build();
         invoker.execute();
     }

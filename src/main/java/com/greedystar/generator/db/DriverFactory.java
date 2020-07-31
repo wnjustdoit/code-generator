@@ -1,14 +1,14 @@
 package com.greedystar.generator.db;
 
 /**
- * Author GreedyStar
- * Date   2018-10-24
+ * @author GreedyStar
+ * @since 1.0.0, 2018-10-24
  */
 public class DriverFactory {
-    private final static String DRIVER_MYSQL_5 = "com.mysql.jdbc.Driver";
-    private final static String DRIVER_MYSQL_UPER = "com.mysql.cj.jdbc.Driver";
-    private final static String DRIVER_ORACLE = "oracle.jdbc.driver.OracleDriver";
-    private final static String DRIVER_SQLSERVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    private static final String DRIVER_MYSQL_5 = "com.mysql.jdbc.Driver";
+    private static final String DRIVER_MYSQL_UPER = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER_ORACLE = "oracle.jdbc.driver.OracleDriver";
+    private static final String DRIVER_SQLSERVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     public static String getDriver(String url) {
         if (url.contains("mysql")) {

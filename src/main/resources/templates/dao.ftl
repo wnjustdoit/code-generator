@@ -1,14 +1,18 @@
-package ${BasePackageName}${InterfacePackageName};
+package ${BasePackageName}${DaoPackageName};
 
 import ${BasePackageName}${EntityPackageName}.${ClassName};
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
- * Author ${Author}
- * Date  ${Date}
+ * @author ${Author}
+ * @since 1.0.0, ${Date}
  */
-public interface ${ClassName}Service {
+@Mapper
+@Component
+public interface ${ClassName}Dao {
 
     public ${ClassName} get(String id);
 

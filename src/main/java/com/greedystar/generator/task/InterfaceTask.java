@@ -3,7 +3,7 @@ package com.greedystar.generator.task;
 import com.greedystar.generator.task.base.AbstractTask;
 import com.greedystar.generator.utils.ConfigUtil;
 import com.greedystar.generator.utils.FileUtil;
-import com.greedystar.generator.utils.FreemarketConfigUtil;
+import com.greedystar.generator.utils.FreemarkerConfigUtil;
 import com.greedystar.generator.utils.StringUtil;
 import freemarker.template.TemplateException;
 
@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Author GreedyStar
- * Date   2019/1/24
+ * @author GreedyStar
+ * @since 1.0.0, 2019/1/24
  */
 public class InterfaceTask extends AbstractTask {
 
@@ -31,12 +31,12 @@ public class InterfaceTask extends AbstractTask {
         interfaceData.put("InterfacePackageName", ConfigUtil.getConfiguration().getPath().getInterf());
         interfaceData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
         interfaceData.put("Author", ConfigUtil.getConfiguration().getAuthor());
-        interfaceData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        interfaceData.put("Date", new SimpleDateFormat("yyyy/M/dd").format(new Date()));
         interfaceData.put("ClassName", className);
         interfaceData.put("EntityName", StringUtil.firstToLowerCase(className));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getInterf());
         String fileName = className + "Service.java";
         // 生成Service接口文件
-        FileUtil.generateToJava(FreemarketConfigUtil.TYPE_INTERFACE, interfaceData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_INTERFACE, interfaceData, filePath, fileName);
     }
 }

@@ -10,8 +10,8 @@ import com.greedystar.generator.utils.StringUtil;
 import java.sql.SQLException;
 
 /**
- * Author GreedyStar
- * Date   2018/9/5
+ * @author GreedyStar
+ * @since 1.0.0, 2018/9/5
  */
 public class One2ManyInvoker extends AbstractInvoker {
 

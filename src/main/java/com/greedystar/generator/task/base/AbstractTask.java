@@ -11,10 +11,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Author GreedyStar
- * Date   2018/4/20
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/20
  */
 public abstract class AbstractTask implements Serializable {
+
     protected String tableName;
     protected String className;
     protected String parentTableName;

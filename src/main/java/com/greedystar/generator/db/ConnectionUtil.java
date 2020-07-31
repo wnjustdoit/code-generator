@@ -2,9 +2,10 @@ package com.greedystar.generator.db;
 
 
 import com.greedystar.generator.entity.ColumnInfo;
-import com.greedystar.generator.entity.Configuration;
 import com.greedystar.generator.utils.ConfigUtil;
 import com.greedystar.generator.utils.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,10 +14,13 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Author GreedyStar
- * Date   2018/4/19
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/19
  */
 public class ConnectionUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionUtil.class);
+
     private Connection connection;
 
     public ConnectionUtil() {
@@ -40,10 +44,8 @@ public class ConnectionUtil {
             properties.setProperty("useInformationSchema", "true");
             connection = DriverManager.getConnection(url, properties);
             return true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error(e.getMessage(), e);
         }
         return false;
     }
@@ -69,7 +71,7 @@ public class ConnectionUtil {
         } else { // Oracle & MySQL
             ResultSet tableResultSet = connection.getMetaData().getTables(null, getSchema(connection), tableName.toUpperCase(), new String[]{"TABLE"});
             if (tableResultSet.next()) {
-                tableRemarks = StringUtil.isBlank(tableResultSet.getString("REMARKS")) ? "Unknown Table" : tableResultSet.getString("REMARKS");
+                tableRemarks = StringUtil.isBlank(tableResultSet.getString("REMARKS")) ? tableName : tableResultSet.getString("REMARKS");
             }
             tableResultSet.close();
         }
@@ -84,11 +86,11 @@ public class ConnectionUtil {
                 isPrimaryKey = false;
             }
             ColumnInfo info = new ColumnInfo(columnResultSet.getString("COLUMN_NAME"), columnResultSet.getInt("DATA_TYPE"),
-                    StringUtil.isBlank(columnResultSet.getString("REMARKS")) ? "Unknown" : columnResultSet.getString("REMARKS"), tableRemarks, isPrimaryKey);
+                    StringUtil.isBlank(columnResultSet.getString("REMARKS")) ? columnResultSet.getString("COLUMN_NAME") : columnResultSet.getString("REMARKS"), tableRemarks, isPrimaryKey);
             columnInfos.add(info);
         }
         columnResultSet.close();
-        if (columnInfos.size() == 0) {
+        if (columnInfos.isEmpty()) {
             throw new Exception("Can not find column information from table:" + tableName);
         }
         if (connection.getMetaData().getURL().contains("sqlserver")) { // SQLServer需要单独处理列REMARKS
@@ -100,9 +102,7 @@ public class ConnectionUtil {
     /**
      * 主动查询SqlServer指定表的注释
      *
-     * @param tableName
-     * @return
-     * @throws SQLException
+     * @param tableName tableName
      */
     private String parseSqlServerTableRemarks(String tableName) throws SQLException {
         String tableRemarks = null;
@@ -121,9 +121,7 @@ public class ConnectionUtil {
     /**
      * 主动查询SqlServer指定表的数据列的注释
      *
-     * @param tableName
-     * @return
-     * @throws SQLException
+     * @param tableName tableName
      */
     private void parseSqlServerColumnRemarks(String tableName, List<ColumnInfo> columnInfos) throws SQLException {
         HashMap<String, String> map = new HashMap<>();
@@ -157,7 +155,7 @@ public class ConnectionUtil {
                 connection.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 

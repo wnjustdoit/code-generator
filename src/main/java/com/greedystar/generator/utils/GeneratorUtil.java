@@ -1,18 +1,21 @@
 package com.greedystar.generator.utils;
 
 import com.greedystar.generator.entity.ColumnInfo;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 
 
 /**
- * Author GreedyStar
- * Date   2018/4/19
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/19
  */
 public class GeneratorUtil {
-    private final static String SPACE_4 = "    ";
-    private final static String SPACE_8 = "        ";
-    private final static String SPACE_12 = "            ";
+
+    private static final String SPACE = " ";
+    private static final String SPACE_4 = "    ";
+    private static final String SPACE_8 = "        ";
+    private static final String SPACE_12 = "            ";
 
     /**
      * 为实体属性生成注释
@@ -27,19 +30,26 @@ public class GeneratorUtil {
     }
 
     /**
-     * 生成实体类属性字段（基本数据类型，用于单表关系）
+     * 生成实体类属性字段（用于单表关系）
      *
      * @param infos 表结构
      * @return
      */
-    public static String generateEntityProperties(List<ColumnInfo> infos) {
+    public static String generateEntityProperties(List<ColumnInfo> infos, boolean... annotationEnabled) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < infos.size(); i++) {
             if (i != 0) {
                 sb.append(SPACE_4);
             }
             generateRemarks(sb, infos.get(i));
-            sb.append(SPACE_4).append("private ").append(ConvertorUtil.parseTypeFormSqlType(infos.get(i).getType())).append(" ").append(infos.get(i).getPropertyName()).append(";\n");
+            if (ArrayUtils.isNotEmpty(annotationEnabled) && annotationEnabled[0]) {
+                sb.append(SPACE_4).append("@SQLField(name = \"").append(infos.get(i).getColumnName()).append("\"");
+                if (infos.get(i).isPrimaryKey()) {
+                    sb.append(", primary = true");
+                }
+                sb.append(")\n");
+            }
+            sb.append(SPACE_4).append("private ").append(ConvertorUtil.parseTypeFormSqlType(infos.get(i).getType())).append(" ").append(infos.get(i).getPropertyName()).append(";\n\n");
         }
         return sb.toString();
     }
@@ -163,7 +173,7 @@ public class GeneratorUtil {
             if (i != 0) {
                 sb.append(SPACE_8);
             }
-            sb.append(tableName).append(".").append(infos.get(i).getColumnName()).append(" AS ").append("\"").append(infos.get(i).getPropertyName()).append("\",\n");
+            sb.append(tableName).append(".").append(infos.get(i).getColumnName()).append(" AS ").append("`").append(infos.get(i).getPropertyName()).append("`,\n");
         }
         return sb.toString().substring(0, sb.toString().length() - 2);
     }
@@ -178,11 +188,11 @@ public class GeneratorUtil {
                 if (i != 0) {
                     sb.append(SPACE_8);
                 }
-                sb.append(tableName).append(".").append(infos.get(i).getColumnName()).append(" AS ").append("\"").append(infos.get(i).getPropertyName()).append("\",\n");
+                sb.append(tableName).append(".").append(infos.get(i).getColumnName()).append(" AS ").append("`").append(infos.get(i).getPropertyName()).append("`,\n");
             }
         }
         for (ColumnInfo info : parentInfos) {
-            sb.append(SPACE_8).append(parentTableName).append(".").append(info.getColumnName()).append(" AS ").append("\"").append(parentEntityName).append(".").append(info.getPropertyName()).append("\",\n");
+            sb.append(SPACE_8).append(parentTableName).append(".").append(info.getColumnName()).append(" AS ").append("`").append(parentEntityName).append(".").append(info.getPropertyName()).append("`,\n");
         }
         return sb.toString().substring(0, sb.toString().length() - 2);
     }
@@ -194,7 +204,7 @@ public class GeneratorUtil {
         StringBuilder sb = new StringBuilder(generateMapperColumnMap(tableName, infos));
         sb.append(",\n");
         for (ColumnInfo info : parentInfos) {
-            sb.append(SPACE_8).append(parentTableName).append(".").append(info.getColumnName()).append(" AS ").append("\"").append(parentEntityName).append("s.").append(info.getPropertyName()).append("\",\n");
+            sb.append(SPACE_8).append(parentTableName).append(".").append(info.getColumnName()).append(" AS ").append("`").append(parentEntityName).append("s.").append(info.getPropertyName()).append("`,\n");
         }
         return sb.toString().substring(0, sb.toString().length() - 2);
     }
@@ -209,9 +219,9 @@ public class GeneratorUtil {
         StringBuilder sb = new StringBuilder();
         for (ColumnInfo info : infos) {
             if (info.isPrimaryKey()) {
-                sb.append("<id column=\"").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append("<id column=\"").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             } else {
-                sb.append(SPACE_8).append("<result column=\"").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append(SPACE_8).append("<result column=\"").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             }
         }
         return sb.toString();
@@ -227,9 +237,9 @@ public class GeneratorUtil {
         StringBuilder sb = new StringBuilder();
         for (ColumnInfo info : infos) {
             if (info.isPrimaryKey()) {
-                sb.append("<id column=\"").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append("<id column=\"").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             } else if (!info.getColumnName().equals(foreignKey)) { // 外键会映射为<association></association>
-                sb.append(SPACE_8).append("<result column=\"").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append(SPACE_8).append("<result column=\"").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             }
         }
         return sb.toString();
@@ -249,9 +259,9 @@ public class GeneratorUtil {
         sb.append("<association property=\"").append(StringUtil.firstToLowerCase(parentClassName)).append("\" javaType=\"").append(parentClassPackage).append(".").append(parentClassName).append("\">\n");
         for (ColumnInfo info : parentInfos) {
             if (info.isPrimaryKey()) {
-                sb.append(SPACE_12).append("<id column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append(".").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append(SPACE_12).append("<id column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append(".").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             } else {
-                sb.append(SPACE_12).append("<result column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append(".").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append(SPACE_12).append("<result column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append(".").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             }
         }
         sb.append(SPACE_8).append("</association>");
@@ -273,9 +283,9 @@ public class GeneratorUtil {
         sb.append("<collection property=\"").append(StringUtil.firstToLowerCase(parentClassName)).append("s\" ofType=\"").append(parentClassPackage).append(".").append(parentClassName).append("\">\n");
         for (ColumnInfo info : parentInfos) {
             if (info.isPrimaryKey()) {
-                sb.append(SPACE_12).append("<id column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append("s").append(".").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append(SPACE_12).append("<id column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append("s").append(".").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             } else {
-                sb.append(SPACE_12).append("<result column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append("s").append(".").append(info.getPropertyName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
+                sb.append(SPACE_12).append("<result column=\"").append(StringUtil.firstToLowerCase(parentClassName)).append("s").append(".").append(info.getColumnName()).append("\" property=\"").append(info.getPropertyName()).append("\"/> \n");
             }
         }
         sb.append(SPACE_8).append("</collection>");

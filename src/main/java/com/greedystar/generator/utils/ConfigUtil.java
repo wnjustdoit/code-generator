@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Author GreedyStar
- * Date   2018/9/7
+ * @author GreedyStar
+ * @since 1.0.0, 2018/9/7
  */
 public class ConfigUtil {
     private static Configuration configuration;

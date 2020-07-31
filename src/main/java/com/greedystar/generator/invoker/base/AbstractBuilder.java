@@ -1,8 +1,8 @@
 package com.greedystar.generator.invoker.base;
 
 /**
- * Author GreedyStar
- * Date   2018/9/5
+ * @author GreedyStar
+ * @since 1.0.0, 2018/9/5
  */
 public abstract class AbstractBuilder {
 

@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Author GreedyStar
- * Date   2018/4/20
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/20
  */
 public class EntityTask extends AbstractTask {
 
@@ -46,7 +46,7 @@ public class EntityTask extends AbstractTask {
         entityData.put("BasePackageName", ConfigUtil.getConfiguration().getPackageName());
         entityData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
         entityData.put("Author", ConfigUtil.getConfiguration().getAuthor());
-        entityData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        entityData.put("Date", new SimpleDateFormat("yyyy/M/dd").format(new Date()));
         entityData.put("ClassName", className);
         entityData.put("Remarks", tableInfos.get(0).getTableRemarks());
         if (!StringUtil.isBlank(parentForeignKey)) { // 多对多：主表实体
@@ -62,6 +62,6 @@ public class EntityTask extends AbstractTask {
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntity());
         String fileName = className + ".java";
         // 生成Entity文件
-        FileUtil.generateToJava(FreemarketConfigUtil.TYPE_ENTITY, entityData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY, entityData, filePath, fileName);
     }
 }

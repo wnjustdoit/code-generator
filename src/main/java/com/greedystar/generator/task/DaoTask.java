@@ -3,7 +3,7 @@ package com.greedystar.generator.task;
 import com.greedystar.generator.task.base.AbstractTask;
 import com.greedystar.generator.utils.ConfigUtil;
 import com.greedystar.generator.utils.FileUtil;
-import com.greedystar.generator.utils.FreemarketConfigUtil;
+import com.greedystar.generator.utils.FreemarkerConfigUtil;
 import com.greedystar.generator.utils.StringUtil;
 import freemarker.template.TemplateException;
 
@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Author GreedyStar
- * Date   2018/4/20
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/20
  */
 public class DaoTask extends AbstractTask {
 
@@ -31,12 +31,12 @@ public class DaoTask extends AbstractTask {
         daoData.put("DaoPackageName", ConfigUtil.getConfiguration().getPath().getDao());
         daoData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
         daoData.put("Author", ConfigUtil.getConfiguration().getAuthor());
-        daoData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        daoData.put("Date", new SimpleDateFormat("yyyy/M/dd").format(new Date()));
         daoData.put("ClassName", className);
         daoData.put("EntityName", StringUtil.firstToLowerCase(className));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getDao());
         String fileName = className + "Dao.java";
         // 生成dao文件
-        FileUtil.generateToJava(FreemarketConfigUtil.TYPE_DAO, daoData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_DAO, daoData, filePath, fileName);
     }
 }

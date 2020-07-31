@@ -3,7 +3,7 @@ package com.greedystar.generator.task;
 import com.greedystar.generator.task.base.AbstractTask;
 import com.greedystar.generator.utils.ConfigUtil;
 import com.greedystar.generator.utils.FileUtil;
-import com.greedystar.generator.utils.FreemarketConfigUtil;
+import com.greedystar.generator.utils.FreemarkerConfigUtil;
 import com.greedystar.generator.utils.StringUtil;
 import freemarker.template.TemplateException;
 
@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Author GreedyStar
- * Date   2018/4/20
+ * @author GreedyStar
+ * @since 1.0.0, 2018/4/20
  */
 public class ServiceTask extends AbstractTask {
 
@@ -32,7 +32,7 @@ public class ServiceTask extends AbstractTask {
         serviceData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
         serviceData.put("DaoPackageName", ConfigUtil.getConfiguration().getPath().getDao());
         serviceData.put("Author", ConfigUtil.getConfiguration().getAuthor());
-        serviceData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        serviceData.put("Date", new SimpleDateFormat("yyyy/M/dd").format(new Date()));
         serviceData.put("ClassName", className);
         serviceData.put("EntityName", StringUtil.firstToLowerCase(className));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getService());
@@ -49,6 +49,6 @@ public class ServiceTask extends AbstractTask {
             fileName = className + "ServiceImpl.java";
         }
         // 生成Service文件
-        FileUtil.generateToJava(FreemarketConfigUtil.TYPE_SERVICE, serviceData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_SERVICE, serviceData, filePath, fileName);
     }
 }

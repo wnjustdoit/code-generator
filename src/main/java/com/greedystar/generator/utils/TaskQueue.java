@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Author GreedyStar
- * Date   2018-11-27
+ * @author GreedyStar
+ * @since 1.0.0, 2018-11-27
  */
 public class TaskQueue {
 
@@ -23,6 +23,9 @@ public class TaskQueue {
     private void initCommonTasks(String className) {
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getController())) {
             taskQueue.add(new ControllerTask(className));
+        }
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getController1())) {
+            taskQueue.add(new Controller1Task(className));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getService())) {
             taskQueue.add(new ServiceTask(className));
@@ -46,6 +49,9 @@ public class TaskQueue {
         initCommonTasks(className);
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
             taskQueue.add(new EntityTask(className, tableInfos));
+        }
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity1())) {
+            taskQueue.add(new Entity1Task(className, tableName, tableInfos));
         }
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
             taskQueue.add(new MapperTask(className, tableName, tableInfos));
