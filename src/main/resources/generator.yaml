@@ -3,14 +3,15 @@ db:
   username: root
   password: 1234567
 author: wangnan
-packageName: com.mamaqunaer.test
-#convertor:
+# 生成路径可以不用改（.gitignore已经设置不用提交），剪切到你的项目指定路径即可
+packageName: generated.code.base
+convertor:
 path:
   controller: controller
-  controller1: controller1
+#  controller1: controller1
   service: service.impl
   interf: service
   dao: dao
   entity: entity
-  entity1: entity1
+#  entity1: entity1
   mapper: mappers

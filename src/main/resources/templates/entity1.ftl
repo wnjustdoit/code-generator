@@ -2,8 +2,8 @@ package ${BasePackageName}${EntityPackageName};
 
 import lombok.*;
 
-import com.mamaqunaer.common.db.object.Page;
-import com.mamaqunaer.common.db.core.annotation.*;
+import com.caiya.common.db.object.Page;
+import com.caiya.common.db.core.annotation.*;
 
 /**
  * ${Remarks}

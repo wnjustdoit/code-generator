@@ -1,10 +1,10 @@
 package com.greedystar.generator.task;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.greedystar.generator.utils.ConfigUtil;
 import com.greedystar.generator.utils.FileUtil;
 import com.greedystar.generator.utils.FreemarkerConfigUtil;
 import com.greedystar.generator.utils.StringUtil;
-import com.mamaqunaer.common.db.support.PropertyNamingStrategy;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class Controller1Task extends ControllerTask {
         controllerData.put("Date", new SimpleDateFormat("yyyy/M/dd").format(new Date()));
         controllerData.put("ClassName", className);
         controllerData.put("EntityName", StringUtil.firstToLowerCase(className));
-        controllerData.put("ClassURI", PropertyNamingStrategy.KEBAB_CASE.nameForField(className).concat("s"));
+        controllerData.put("ClassURI", PropertyNamingStrategy.KEBAB_CASE.nameForField(null, null, className).concat("s"));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getController1());
         String fileName = className + "Controller.java";
         // 生成Controller文件

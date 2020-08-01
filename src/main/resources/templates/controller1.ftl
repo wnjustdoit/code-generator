@@ -3,8 +3,8 @@ package ${BasePackageName}${ControllerPackageName};
 import ${BasePackageName}${EntityPackageName}.${ClassName};
 import org.springframework.web.bind.annotation.*;
 
-import com.mamaqunaer.common.db.core.JdbcOperator;
-import com.mamaqunaer.common.db.core.sql.*;
+import com.caiya.common.db.core.JdbcOperator;
+import com.caiya.common.db.core.sql.*;
 
 import java.util.HashMap;
 import java.util.List;
