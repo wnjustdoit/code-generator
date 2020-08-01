@@ -2,7 +2,7 @@
 #### 来源
 来自：https://github.com/GreedyStar/generator/   
 查看原 [REAME.md](README_ORIGIN.md)   
-**改进**：
+**[改进](https://github.com/GreedyStar/generator/compare/release-1.3.0...wnjustdoit:release-1.4.0)**：
 * 修复部分bug；
 * 增强稳定性；
 * 拓展更多的模板
